@@ -18,6 +18,27 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <android.support.design.widget.TabLayout
+
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill">
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_tweet"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="Tweets"
+                />
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_graph"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="Graph"
+                />
+
+        </android.support.design.widget.TabLayout>
 
     </android.support.design.widget.AppBarLayout>
 
