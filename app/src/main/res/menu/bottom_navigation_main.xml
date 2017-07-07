@@ -5,11 +5,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/start"
         android:enabled="true"
+        android:icon="@drawable/ic_play_arrow_black_24dp"
+        app:showAsAction="always"
         android:title="Start"
         />
-    <item
+    <item xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/stop"
         android:enabled="true"
+        android:icon="@drawable/ic_stop_black_24dp"
+        app:showAsAction="always"
         android:title="Stop"
         />
 </menu>
