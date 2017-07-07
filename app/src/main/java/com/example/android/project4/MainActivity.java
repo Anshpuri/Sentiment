@@ -1,11 +1,12 @@
 package com.example.android.project4;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,9 +14,21 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.android.project4.FragmentAdpaters.TwitterViewPagerAdapter;
+import com.example.android.project4.Fragments.TweetsFragment;
+import com.example.android.project4.Fragments.TwitterGraphFragment;
+
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    FragmentManager fragmentManager;
+    TabLayout tabLayout;
+    ViewPager viewPager;
+    TwitterViewPagerAdapter twitterViewPagerAdapter;
+    ArrayList<Fragment> fragmentList = new ArrayList<>();
+    ArrayList<String> fragmentTitleList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,14 +36,21 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        //adding Fragments
+        fragmentList.add(TweetsFragment.newInstance("",""));
+        fragmentList.add(TwitterGraphFragment.newInstance("",""));
+        fragmentTitleList.add("Tweets");
+        fragmentTitleList.add("Graph");
+
+        tabLayout= (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.tweet_view_pager);
+
+        fragmentManager=getSupportFragmentManager();
+        twitterViewPagerAdapter=new TwitterViewPagerAdapter(fragmentManager,fragmentList,fragmentTitleList);
+        viewPager.setAdapter(twitterViewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

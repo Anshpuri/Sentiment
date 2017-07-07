@@ -8,13 +8,43 @@
     tools:context="com.example.android.project4.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <android.support.v4.view.ViewPager
+        android:layout_margin="0dp"
+        android:id="@+id/tweet_view_pager"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed"
+            app:tabGravity="fill">
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_tweet"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="Tweets"
+                />
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_graph"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:text="Graph"
+                />
+
+        </android.support.design.widget.TabLayout>
+
+    </android.support.v4.view.ViewPager>
+
 
 </android.support.constraint.ConstraintLayout>
