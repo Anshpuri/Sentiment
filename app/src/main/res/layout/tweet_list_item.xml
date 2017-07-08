@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_marginBottom="5dp"
+    app:cardElevation="10dp"
+    app:cardCornerRadius="10dp"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:padding="2dp"
+            android:layout_marginBottom="2dp"
+            android:id="@+id/tv_tweet"
+            android:layout_width="match_parent"
+            android:text="tweet"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/img_user"
+            android:layout_below="@+id/tv_tweet"
+            android:padding="2dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/placeimg_50_50_grayscale_animals"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:text="username"
+            android:textSize="18sp"
+            android:layout_toRightOf="@+id/img_user"
+            android:layout_below="@+id/tv_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_sentiment"
+            android:padding="2dp"
+            android:text="sentiment"
+            android:layout_below="@+id/img_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
