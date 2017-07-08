@@ -15,8 +15,10 @@ import android.view.ViewGroup;
 import com.example.android.project4.R;
 import com.example.android.project4.RecyclerViewAdapters.TweetAdapter;
 import com.example.android.project4.TwitterStreamConnection;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -50,7 +52,7 @@ public class TweetsFragment extends Fragment {
     private ConfigurationBuilder configurationBuilder;
     private FilterQuery tweetFilterQuery;
     private StatusListener statusListener;
-
+    private AVLoadingIndicatorView loader;
     public static final String TAG="TWITTER_OBSERVER";
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -90,8 +92,9 @@ public class TweetsFragment extends Fragment {
         rv=(RecyclerView) v.findViewById(R.id.rv_tweets);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        loader=(AVLoadingIndicatorView)v.findViewById(R.id.avi_loader);
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        subject =PublishSubject.create();
+//        subject =PublishSubject.create();
         twitterStream= TwitterStreamConnection.getInstance().getTwitterStream();
         configurationBuilder= TwitterStreamConnection.getInstance().getCb();
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -111,10 +114,18 @@ public class TweetsFragment extends Fragment {
                     case R.id.stop:
                         disposable.dispose();
                         twitterStream.removeListener(statusListener);
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                twitterStream.cleanUp();
+                                twitterStream.shutdown();
+                            }
+                        }).start();
 
                         break;
 
                     case R.id.start:
+                        loader.show();
                         twitterObservable=gettwitterObservable();
 //                        twitterStream.addListener(statusListener);
                         twitterObservable.subscribeOn(Schedulers.io())
@@ -127,6 +138,7 @@ public class TweetsFragment extends Fragment {
 
                                     @Override
                                     public void onNext(Status status) {
+                                        loader.hide();
                                         tweetList.add(0,status);
                                         adapter.notifyDataSetChanged();
                                     }
@@ -201,7 +213,7 @@ public class TweetsFragment extends Fragment {
                 twitterStream.addListener(statusListener);
                 twitterStream.filter(tweetFilterQuery);
             }
-        });
+        }).debounce(500, TimeUnit.MILLISECONDS);
 
 //        return Observable.create(subscriber -> {
 //                    twitterStream=new TwitterStreamFactory(configurationBuilder.build()).getInstance();

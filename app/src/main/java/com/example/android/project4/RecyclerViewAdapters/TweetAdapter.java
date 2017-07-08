@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import jp.wasabeef.picasso.transformations.CropCircleTransformation;
 import synesketch.emotion.EmotionalState;
 import twitter4j.Status;
 
@@ -51,7 +52,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         if(emotionalState!=null)
             holder.tv_emotion.setText(emotionalState.getStrongestEmotion().toString());
 
-        Picasso.with(context).load(status.getUser().getOriginalProfileImageURL()).into(holder.img_user);
+        Picasso.with(context).load(status.getUser().getOriginalProfileImageURL()).transform(new CropCircleTransformation()).placeholder(R.drawable.rsz_1placeholder_twitter).into(holder.img_user);
     }
 
     @Override
