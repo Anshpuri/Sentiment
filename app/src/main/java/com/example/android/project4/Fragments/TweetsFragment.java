@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,13 +18,19 @@ import com.example.android.project4.TwitterStreamConnection;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import twitter4j.FilterQuery;
 import twitter4j.Status;
 import twitter4j.StatusAdapter;
 import twitter4j.TwitterStream;
+import twitter4j.conf.ConfigurationBuilder;
 
 
 public class TweetsFragment extends Fragment {
@@ -37,7 +43,10 @@ public class TweetsFragment extends Fragment {
     private RecyclerView rv;
     private ArrayList<Status> tweetList=new ArrayList<>();
     private TweetAdapter adapter;
-
+    private Observable<Status> twitterObservable;
+    private TwitterStream twitterStream;
+    private ConfigurationBuilder configurationBuilder;
+    private FilterQuery tweetFilterQuery;
 
     public static final String TAG="TWITTER_OBSERVER";
     // TODO: Rename and change types of parameters
@@ -74,59 +83,59 @@ public class TweetsFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_tweets, container, false);
         ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation=(BottomNavigationView) v.findViewById(R.id.bottom_navigation);
-        adapter=new TweetAdapter(tweetList,v.getContext());
+        adapter=new TweetAdapter(tweetList,getActivity().getApplicationContext());
         rv=(RecyclerView) v.findViewById(R.id.rv_tweets);
         rv.setAdapter(adapter);
+        rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         ////////////////////////////////////////////////////////////////////////////////////////////////
         subject =PublishSubject.create();
-        TwitterStream twitterStream= TwitterStreamConnection.getInstance().getTwitterStream();
-        twitterStream.addListener(new StatusAdapter(){
-            @Override
-            public void onStatus(Status status) {
-                subject.onNext(status);
-            }
-        });
+        twitterStream= TwitterStreamConnection.getInstance().getTwitterStream();
+        configurationBuilder= TwitterStreamConnection.getInstance().getCb();
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        FilterQuery tweetFilterQuery = new FilterQuery();
+        tweetFilterQuery = new FilterQuery();
         tweetFilterQuery.track(new String[]{"narendra modi","india","modi"});
         tweetFilterQuery.language(new String[]{"en"});
-        twitterStream.filter(tweetFilterQuery);
+
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 switch (item.getItemId()){
+
                     case R.id.stop:
                         disposable.dispose();
                         break;
+
                     case R.id.start:
-                        subject.subscribe(new Observer<Status>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-                                disposable=d;
-                            }
+                        twitterObservable=gettwitterObservable();
+                        twitterObservable.subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribeWith(new Observer<Status>() {
+                                    @Override
+                                    public void onSubscribe(Disposable d) {
+                                        disposable=d;
+                                    }
 
-                            @Override
-                            public void onNext(Status status) {
-                                tweetList.add(0,status);
-                                adapter.notifyDataSetChanged();
-                                Log.d(TAG, "onNext: "+ status.getUser().getName().toString());
-                                Log.d(TAG, "onNext: "+ status.getText().toString());
+                                    @Override
+                                    public void onNext(Status status) {
+                                        tweetList.add(0,status);
+                                        adapter.notifyDataSetChanged();
+                                    }
 
-                                Log.d(TAG, "onNext: ---------------------------------------");
-                            }
+                                    @Override
+                                    public void onError(Throwable e) {
 
-                            @Override
-                            public void onError(Throwable e) {
+                                    }
 
-                            }
+                                    @Override
+                                    public void onComplete() {
 
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+                                    }
+                                });
+                        break;
                 }
 
                 return true;
@@ -138,4 +147,41 @@ public class TweetsFragment extends Fragment {
         return v;
     }
 
+
+
+
+    public Observable<Status> gettwitterObservable(){
+
+        return Observable.create(new ObservableOnSubscribe<Status>() {
+            @Override
+            public void subscribe(final ObservableEmitter<Status> e) throws Exception {
+                twitterStream.addListener(new StatusAdapter(){
+                    @Override
+                    public void onStatus(Status status) {
+                        e.onNext(status);
+                    }
+                });
+                twitterStream.filter(tweetFilterQuery);
+            }
+        });
+
+//        return Observable.create(subscriber -> {
+//                    twitterStream=new TwitterStreamFactory(configurationBuilder.build()).getInstance();
+//
+//                    if (twitterStream==null){
+//                        Log.d(TAG, "twitterObservable: twitterstream NULL");
+//                    }
+//                    twitterStream.addListener(new StatusAdapter(){
+//                        @Override
+//                        public void onStatus(Status status) {
+//                            subscriber.onNext(status);
+//                        }
+//                    });
+//
+//                    twitterStream.filter(tweetFilterQuery);
+//
+//                }
+//        );
+
+    }
 }

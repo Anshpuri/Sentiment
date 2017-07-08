@@ -26,11 +26,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
     private Context context;
     private EmotionalState emotionalState=null;
 
-    public TweetAdapter(ArrayList<Status> tweetList, Context context,EmotionalState emotionalState) {
-        this.tweetList = tweetList;
-        this.context = context;
-        this.emotionalState=emotionalState;
-    }
+//    public TweetAdapter(ArrayList<Status> tweetList, Context context,EmotionalState emotionalState) {
+//        this.tweetList = tweetList;
+//        this.context = context;
+//        this.emotionalState=emotionalState;
+//    }
     public TweetAdapter(ArrayList<Status> tweetList, Context context) {
         this.tweetList = tweetList;
         this.context = context;
@@ -51,7 +51,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
         if(emotionalState!=null)
             holder.tv_emotion.setText(emotionalState.getStrongestEmotion().toString());
 
-        Picasso.with(context).load(status.getUser().getMiniProfileImageURL()).into(holder.img_user);
+        Picasso.with(context).load(status.getUser().getOriginalProfileImageURL()).into(holder.img_user);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
             super(itemView);
             tv_username=(TextView) itemView.findViewById(R.id.tv_username);
             tv_emotion=(TextView) itemView.findViewById(R.id.tv_sentiment);
+            img_user=(ImageView) itemView.findViewById(R.id.img_user);
             tv_tweet=(TextView) itemView.findViewById(R.id.tv_tweet);
             v=itemView;
         }
