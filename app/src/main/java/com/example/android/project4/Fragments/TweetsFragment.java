@@ -27,8 +27,10 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import twitter4j.FilterQuery;
+import twitter4j.StallWarning;
 import twitter4j.Status;
-import twitter4j.StatusAdapter;
+import twitter4j.StatusDeletionNotice;
+import twitter4j.StatusListener;
 import twitter4j.TwitterStream;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -47,6 +49,7 @@ public class TweetsFragment extends Fragment {
     private TwitterStream twitterStream;
     private ConfigurationBuilder configurationBuilder;
     private FilterQuery tweetFilterQuery;
+    private StatusListener statusListener;
 
     public static final String TAG="TWITTER_OBSERVER";
     // TODO: Rename and change types of parameters
@@ -96,7 +99,7 @@ public class TweetsFragment extends Fragment {
         tweetFilterQuery.track(new String[]{"narendra modi","india","modi"});
         tweetFilterQuery.language(new String[]{"en"});
 
-
+//        twitterObservable=gettwitterObservable();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -107,10 +110,13 @@ public class TweetsFragment extends Fragment {
 
                     case R.id.stop:
                         disposable.dispose();
+                        twitterStream.removeListener(statusListener);
+
                         break;
 
                     case R.id.start:
                         twitterObservable=gettwitterObservable();
+//                        twitterStream.addListener(statusListener);
                         twitterObservable.subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribeWith(new Observer<Status>() {
@@ -155,12 +161,44 @@ public class TweetsFragment extends Fragment {
         return Observable.create(new ObservableOnSubscribe<Status>() {
             @Override
             public void subscribe(final ObservableEmitter<Status> e) throws Exception {
-                twitterStream.addListener(new StatusAdapter(){
+                statusListener=new StatusListener() {
                     @Override
                     public void onStatus(Status status) {
                         e.onNext(status);
                     }
-                });
+
+                    @Override
+                    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+
+                    }
+
+                    @Override
+                    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+
+                    }
+
+                    @Override
+                    public void onScrubGeo(long userId, long upToStatusId) {
+
+                    }
+
+                    @Override
+                    public void onStallWarning(StallWarning warning) {
+
+                    }
+
+                    @Override
+                    public void onException(Exception ex) {
+
+                    }
+                };
+//                twitterStream.addListener(new StatusAdapter(){
+//                    @Override
+//                    public void onStatus(Status status) {
+//                        e.onNext(status);
+//                    }
+//                });
+                twitterStream.addListener(statusListener);
                 twitterStream.filter(tweetFilterQuery);
             }
         });

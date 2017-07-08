@@ -4,7 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:padding="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginBottom="10dp"
     app:cardElevation="10dp"
     app:cardCornerRadius="10dp"
     android:layout_height="wrap_content">
@@ -14,7 +16,8 @@
         android:layout_height="match_parent">
         <TextView
             android:padding="2dp"
-            android:layout_marginBottom="2dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="10dp"
             android:id="@+id/tv_tweet"
             android:layout_width="match_parent"
             android:text="tweet"
@@ -26,18 +29,18 @@
             android:layout_marginBottom="2dp"
             android:layout_marginRight="2dp"
             android:src="@drawable/placeimg_50_50_grayscale_animals"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"/>
+            android:layout_height="40dp"
+            android:layout_width="40dp"/>
         <TextView
             android:id="@+id/tv_username"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="2dp"
             android:text="username"
             android:textSize="18sp"
             android:layout_toRightOf="@+id/img_user"
             android:layout_below="@+id/tv_tweet"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="40dp" />
         <TextView
             android:id="@+id/tv_sentiment"
             android:padding="2dp"
