@@ -8,17 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.project4.R;
+import com.example.android.project4.TwitterObserver;
+import com.example.android.project4.TwitterStreamConnection;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TweetsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import io.reactivex.disposables.Disposable;
+import io.reactivex.subjects.PublishSubject;
+import twitter4j.FilterQuery;
+import twitter4j.Status;
+import twitter4j.StatusAdapter;
+import twitter4j.TwitterStream;
+
+
 public class TweetsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Disposable disposable;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -28,16 +34,6 @@ public class TweetsFragment extends Fragment {
     public TweetsFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TweetsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static TweetsFragment newInstance(String param1, String param2) {
         TweetsFragment fragment = new TweetsFragment();
         Bundle args = new Bundle();
@@ -54,6 +50,7 @@ public class TweetsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -61,6 +58,23 @@ public class TweetsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tweets, container, false);
+
+        final PublishSubject<Status> subject =PublishSubject.create();
+        TwitterStream twitterStream= TwitterStreamConnection.getInstance().getTwitterStream();
+        twitterStream.addListener(new StatusAdapter(){
+            @Override
+            public void onStatus(Status status) {
+                subject.onNext(status);
+            }
+        });
+
+        TwitterObserver twitterObserver = new TwitterObserver();
+        FilterQuery tweetFilterQuery = new FilterQuery();
+        tweetFilterQuery.track(new String[]{"narendra modi","india","modi"});
+        tweetFilterQuery.language(new String[]{"en"});
+        twitterObserver.setFilterQuery(tweetFilterQuery);
+        subject.subscribe(twitterObserver.getObserver());
+
         return v;
     }
 
