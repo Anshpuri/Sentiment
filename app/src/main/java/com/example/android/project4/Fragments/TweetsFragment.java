@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +18,9 @@ import com.example.android.project4.RecyclerViewAdapters.TweetAdapter;
 import com.example.android.project4.TwitterStreamConnection;
 import com.wang.avi.AVLoadingIndicatorView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -28,6 +31,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
+import synesketch.emotion.Emotion;
+import synesketch.emotion.EmotionalState;
 import twitter4j.FilterQuery;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -53,13 +58,21 @@ public class TweetsFragment extends Fragment {
     private FilterQuery tweetFilterQuery;
     private StatusListener statusListener;
     private AVLoadingIndicatorView loader;
+
+    private HashMap<Integer,String> Hmap=new HashMap<Integer,String>();
+
+    private EmotionalState emotionalState=null;
+    private synesketch.emotion.Empathyscope empathyscope = null;
     public static final String TAG="TWITTER_OBSERVER";
+
+    private ArrayList<Pair<Status,EmotionalState>> tweetWithEmotionList= new ArrayList<Pair<Status, EmotionalState>>();
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String query;
     private String mParam2;
 
 
     public TweetsFragment() {
+
         // Required empty public constructor
     }
     public static TweetsFragment newInstance(String param1, String param2) {
@@ -75,7 +88,7 @@ public class TweetsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
+            query = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
@@ -86,9 +99,20 @@ public class TweetsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tweets, container, false);
+
+        TwitterGraphFragment twitterGraphFragment = new TwitterGraphFragment();
+
+        Hmap.put(Emotion.ANGER,"anger");
+        Hmap.put(Emotion.DISGUST,"disgust");
+        Hmap.put(Emotion.FEAR,"fear");
+        Hmap.put(Emotion.HAPPINESS,"happy");
+        Hmap.put(Emotion.NEUTRAL,"neutral");
+        Hmap.put(Emotion.SADNESS,"sad");
+        Hmap.put(Emotion.SURPRISE,"surprise");
+
         ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation=(BottomNavigationView) v.findViewById(R.id.bottom_navigation);
-        adapter=new TweetAdapter(tweetList,getActivity().getApplicationContext());
+        adapter=new TweetAdapter(tweetWithEmotionList,getActivity().getApplicationContext(),emotionalState);
         rv=(RecyclerView) v.findViewById(R.id.rv_tweets);
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
@@ -99,11 +123,17 @@ public class TweetsFragment extends Fragment {
         configurationBuilder= TwitterStreamConnection.getInstance().getCb();
         ////////////////////////////////////////////////////////////////////////////////////////////////
         tweetFilterQuery = new FilterQuery();
-        tweetFilterQuery.track(new String[]{"narendra modi","india","modi"});
+//        tweetFilterQuery.track(new String[]{"narendra modi","india","modi"});
+        tweetFilterQuery.track(new String[]{query});
         tweetFilterQuery.language(new String[]{"en"});
 
 //        twitterObservable=gettwitterObservable();
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        try {
+            empathyscope = synesketch.emotion.Empathyscope.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -139,6 +169,7 @@ public class TweetsFragment extends Fragment {
                                     @Override
                                     public void onNext(Status status) {
                                         loader.hide();
+                                        tweetWithEmotionList.add(0,new Pair<Status, EmotionalState>(status,emotionalState));
                                         tweetList.add(0,status);
                                         adapter.notifyDataSetChanged();
                                     }
@@ -160,7 +191,6 @@ public class TweetsFragment extends Fragment {
             }
         });
 
-//        subject.subscribe(twitterObserver.getObserver());
 
         return v;
     }
@@ -176,6 +206,13 @@ public class TweetsFragment extends Fragment {
                 statusListener=new StatusListener() {
                     @Override
                     public void onStatus(Status status) {
+                        try {
+                            emotionalState = empathyscope.feel(status.getText().toString());
+
+
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
                         e.onNext(status);
                     }
 
@@ -213,7 +250,7 @@ public class TweetsFragment extends Fragment {
                 twitterStream.addListener(statusListener);
                 twitterStream.filter(tweetFilterQuery);
             }
-        }).debounce(500, TimeUnit.MILLISECONDS);
+        }).debounce(300, TimeUnit.MILLISECONDS);
 
 //        return Observable.create(subscriber -> {
 //                    twitterStream=new TwitterStreamFactory(configurationBuilder.build()).getInstance();
@@ -234,4 +271,6 @@ public class TweetsFragment extends Fragment {
 //        );
 
     }
+
+
 }

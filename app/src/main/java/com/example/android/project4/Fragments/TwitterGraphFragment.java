@@ -1,6 +1,7 @@
 package com.example.android.project4.Fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,6 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.project4.R;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,29 +27,24 @@ import com.example.android.project4.R;
  * create an instance of this fragment.
  */
 public class TwitterGraphFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    public static final String TAG="GRAPH";
     private String mParam1;
     private String mParam2;
+    private HashMap<String,Integer> map =new HashMap<String, Integer>();
+    PieChart mChart;
+    private Entry entry;
+
+    int Anger=0,Disgust=0,Fear=0,Happy=0,Neutral=0,Sad=0,Surprise=0;
+
 
 
     public TwitterGraphFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TwitterGraphFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static TwitterGraphFragment newInstance(String param1, String param2) {
         TwitterGraphFragment fragment = new TwitterGraphFragment();
         Bundle args = new Bundle();
@@ -56,11 +63,91 @@ public class TwitterGraphFragment extends Fragment {
         }
     }
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_twitter_graph, container, false);
+
+        View v= inflater.inflate(R.layout.fragment_twitter_graph, container, false);
+
+
+        map.put("anger",0);
+        map.put("disgust",0);
+        map.put("fear",0);
+        map.put("happy",0);
+        map.put("neutral",0);
+        map.put("sad",0);
+        map.put("surprise",0);
+
+
+        mChart =(PieChart)v.findViewById(R.id.pieChart);
+        mChart.setUsePercentValues(true);
+//        mChart.setDescription("Smartphones Market Share");
+        mChart.setDrawHoleEnabled(true);
+        mChart.setHoleRadius(7);
+        mChart.setTransparentCircleRadius(10);
+
+        mChart.setRotationAngle(0);
+        mChart.setRotationEnabled(true);
+
+        addData();
+
+        return  v;
+    }
+
+    private void addData() {
+
+
+        // add many colors
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+        colors.add(ColorTemplate.getHoloBlue());
+
+
+
+
+        final List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(Anger, "Anger"));
+        entries.add(new PieEntry(Disgust, "Disgust"));
+        entries.add(new PieEntry(Fear, "Fear"));
+        entries.add(new PieEntry(Happy, "Happy"));
+        entries.add(new PieEntry(Neutral, "Neutral"));
+        entries.add(new PieEntry(Sad, "Sad"));
+        entries.add(new PieEntry(Surprise, "Surprise"));
+
+        final PieDataSet set = new PieDataSet(entries, "Election Results");
+        set.setColors(colors);
+
+
+
+        final PieData data = new PieData(set);
+
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.GRAY);
+        mChart.setData(data);
+
+        set.notifyDataSetChanged();
+        mChart.notifyDataSetChanged();
+        data.notifyDataChanged();
+        mChart.invalidate(); // refresh
     }
 
 }
