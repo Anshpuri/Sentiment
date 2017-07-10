@@ -36,14 +36,14 @@
         <receiver
             android:name=".BroadCastRecievers.ComposeTweetReceiver"
             android:enabled="true"
-            android:exported="false"
-            >
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS"/>
-                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE"/>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS" />
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE" />
             </intent-filter>
-
         </receiver>
+
+        <activity android:name=".NewsActivity"></activity>
     </application>
 
 </manifest>
