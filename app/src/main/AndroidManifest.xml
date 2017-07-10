@@ -31,7 +31,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".TweetActivity" />
-        <activity android:name=".ComposeActivity"></activity>
+        <activity android:name=".ComposeActivity" />
+
+        <receiver
+            android:name=".BroadCastRecievers.ComposeTweetReceiver"
+            android:enabled="true"
+            android:exported="false"
+            >
+            <intent-filter>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_SUCCESS"/>
+                <action android:name="com.twitter.sdk.android.tweetcomposer.UPLOAD_FAILURE"/>
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

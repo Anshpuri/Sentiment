@@ -1,9 +1,12 @@
 package com.example.android.project4.Fragments;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,13 +35,13 @@ public class TwitterGraphFragment extends Fragment {
     public static final String TAG="GRAPH";
     private String mParam1;
     private String mParam2;
-    private HashMap<String,Integer> map =new HashMap<String, Integer>();
+
     PieChart mChart;
     private Entry entry;
 
-    int Anger=0,Disgust=0,Fear=0,Happy=0,Neutral=0,Sad=0,Surprise=0;
 
-
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     public TwitterGraphFragment() {
 
@@ -72,15 +74,10 @@ public class TwitterGraphFragment extends Fragment {
 
         View v= inflater.inflate(R.layout.fragment_twitter_graph, container, false);
 
+        preferences=getActivity().getSharedPreferences("emotionPref", Context.MODE_PRIVATE);
 
-        map.put("anger",0);
-        map.put("disgust",0);
-        map.put("fear",0);
-        map.put("happy",0);
-        map.put("neutral",0);
-        map.put("sad",0);
-        map.put("surprise",0);
-
+        Log.d(TAG, "onCreateView: "+ preferences.getInt("anger",0));
+        Log.d(TAG, "onCreateView: "+ preferences.getInt("disgust",0));
 
         mChart =(PieChart)v.findViewById(R.id.pieChart);
         mChart.setUsePercentValues(true);
@@ -124,15 +121,15 @@ public class TwitterGraphFragment extends Fragment {
 
         final List<PieEntry> entries = new ArrayList<>();
 
-        entries.add(new PieEntry(Anger, "Anger"));
-        entries.add(new PieEntry(Disgust, "Disgust"));
-        entries.add(new PieEntry(Fear, "Fear"));
-        entries.add(new PieEntry(Happy, "Happy"));
-        entries.add(new PieEntry(Neutral, "Neutral"));
-        entries.add(new PieEntry(Sad, "Sad"));
-        entries.add(new PieEntry(Surprise, "Surprise"));
+        entries.add(new PieEntry(preferences.getInt("anger",0), "Anger"));
+        entries.add(new PieEntry(preferences.getInt("disgust",0), "Disgust"));
+        entries.add(new PieEntry(preferences.getInt("fear",0), "Fear"));
+        entries.add(new PieEntry(preferences.getInt("happy",0), "Happy"));
+        entries.add(new PieEntry(preferences.getInt("neutral",0), "Neutral"));
+        entries.add(new PieEntry(preferences.getInt("sad",0), "Sad"));
+        entries.add(new PieEntry(preferences.getInt("surprise",0), "Surprise"));
 
-        final PieDataSet set = new PieDataSet(entries, "Election Results");
+        final PieDataSet set = new PieDataSet(entries, "emotion Results");
         set.setColors(colors);
 
 
@@ -144,9 +141,9 @@ public class TwitterGraphFragment extends Fragment {
         data.setValueTextColor(Color.GRAY);
         mChart.setData(data);
 
-        set.notifyDataSetChanged();
-        mChart.notifyDataSetChanged();
-        data.notifyDataChanged();
+//        set.notifyDataSetChanged();
+//        mChart.notifyDataSetChanged();
+//        data.notifyDataChanged();
         mChart.invalidate(); // refresh
     }
 

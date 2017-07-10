@@ -1,9 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.android.project4.ComposeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:layout_margin="10dp"
+        android:id="@+id/rl_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/imgplaceholder"
+        android:scaleType="centerCrop"
+        android:id="@+id/img_tweet_pic"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_pic"
+        android:layout_width="70dp"
+        android:layout_marginLeft="300dp"
+        android:src="@drawable/ic_menu_camera"
+        android:layout_alignBottom="@+id/img_tweet_pic"
+        android:layout_height="70dp" />
+
+    </RelativeLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_tweet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_tweet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="Tweet" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_hashtag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_hashtag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:hint="#HashTag" />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_compose"
+        android:layout_marginTop="50dp"
+        android:text="Teet"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/tw__solid_white"
+        android:layout_width="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="50dp" />
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:lottie_fileName="mild_wave.json"
+        app:lottie_loop="true"
+
+        app:lottie_autoPlay="true" />
+</LinearLayout>

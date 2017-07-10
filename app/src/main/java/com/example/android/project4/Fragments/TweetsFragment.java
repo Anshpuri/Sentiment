@@ -1,6 +1,8 @@
 package com.example.android.project4.Fragments;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -71,6 +73,10 @@ public class TweetsFragment extends Fragment {
     private String mParam2;
 
 
+    int count_anger=0,count_disgust=0,count_fear=0,count_happy=0,count_neutral=0,count_sad=0,count_surprise=0;
+
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     public TweetsFragment() {
 
         // Required empty public constructor
@@ -100,8 +106,8 @@ public class TweetsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_tweets, container, false);
 
-        TwitterGraphFragment twitterGraphFragment = new TwitterGraphFragment();
-
+        preferences=getActivity().getSharedPreferences("emotionPref", Context.MODE_PRIVATE);
+        editor=preferences.edit();
         Hmap.put(Emotion.ANGER,"anger");
         Hmap.put(Emotion.DISGUST,"disgust");
         Hmap.put(Emotion.FEAR,"fear");
@@ -151,7 +157,14 @@ public class TweetsFragment extends Fragment {
                                 twitterStream.shutdown();
                             }
                         }).start();
-
+                        editor.putInt("anger",count_anger);
+                        editor.putInt("disgust",count_disgust);
+                        editor.putInt("fear",count_fear);
+                        editor.putInt("happy",count_happy);
+                        editor.putInt("neutral",count_neutral);
+                        editor.putInt("sad",count_sad);
+                        editor.putInt("surprise",count_surprise);
+                        editor.apply();
                         break;
 
                     case R.id.start:
@@ -169,6 +182,13 @@ public class TweetsFragment extends Fragment {
                                     @Override
                                     public void onNext(Status status) {
                                         loader.hide();
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.ANGER){count_anger++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.DISGUST){count_disgust++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.SADNESS){count_sad++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.FEAR){count_fear++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.HAPPINESS){count_happy++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.NEUTRAL){count_neutral++;}
+                                        if(emotionalState.getStrongestEmotion().getType()==Emotion.SURPRISE){count_surprise++;}
                                         tweetWithEmotionList.add(0,new Pair<Status, EmotionalState>(status,emotionalState));
                                         tweetList.add(0,status);
                                         adapter.notifyDataSetChanged();

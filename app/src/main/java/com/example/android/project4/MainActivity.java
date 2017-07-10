@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             startActivity(new Intent(MainActivity.this,TweetActivity.class));
         } else if (id == R.id.nav_gallery) {
-
+            startActivity(new Intent(MainActivity.this,ComposeActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
