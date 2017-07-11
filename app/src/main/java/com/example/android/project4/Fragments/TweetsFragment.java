@@ -23,7 +23,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -61,6 +60,7 @@ public class TweetsFragment extends Fragment {
     private StatusListener statusListener;
     private AVLoadingIndicatorView loader;
 
+    String text="";
     private HashMap<Integer,String> Hmap=new HashMap<Integer,String>();
 
     private EmotionalState emotionalState=null;
@@ -119,8 +119,10 @@ public class TweetsFragment extends Fragment {
         ////////////////////////////////////////////////////////////////////////////////////////////////
         bottomNavigation=(BottomNavigationView) v.findViewById(R.id.bottom_navigation);
         adapter=new TweetAdapter(tweetWithEmotionList,getActivity().getApplicationContext(),emotionalState);
+
         rv=(RecyclerView) v.findViewById(R.id.rv_tweets);
         rv.setAdapter(adapter);
+
         rv.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
         loader=(AVLoadingIndicatorView)v.findViewById(R.id.avi_loader);
         ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +229,12 @@ public class TweetsFragment extends Fragment {
                     @Override
                     public void onStatus(Status status) {
                         try {
-                            emotionalState = empathyscope.feel(status.getText().toString());
+                            text=status.getText().toString();
+                            //remove url and RT and username
+                            text.replaceAll("(?:<\\w+.*?>|[^=!:'\"/]|^)((?:https?://|www\\.)[-\\w]+(?:\\.[-\\w]+)*(?::\\d+)?(?:/(?:(?:[~\\w\\+%-]|(?:[,.;@:][^\\s$]))+)?)*(?:\\?[\\w\\+%&=.;:-]+)?(?:\\#[\\w\\-\\.]*)?)(?:\\p{P}|\\s|<|$)\n","");
+                            text.replaceAll("RT","");
+                            text.replaceAll("(?<=^|(?<=[^a-zA-Z0-9-_\\.]))@([A-Za-z]+[A-Za-z0-9]+)\n","");
+                            emotionalState = empathyscope.feel(text);
 
 
                         } catch (IOException e1) {
@@ -270,7 +277,7 @@ public class TweetsFragment extends Fragment {
                 twitterStream.addListener(statusListener);
                 twitterStream.filter(tweetFilterQuery);
             }
-        }).debounce(300, TimeUnit.MILLISECONDS);
+        });
 
 //        return Observable.create(subscriber -> {
 //                    twitterStream=new TwitterStreamFactory(configurationBuilder.build()).getInstance();

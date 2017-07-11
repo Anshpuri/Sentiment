@@ -41,7 +41,7 @@ public class NewsActivity extends AppCompatActivity {
         if(newsService==null){
             Log.d(TAG, "onCreate: sewsservice is null" );
         }
-        Call<Response> newsObservable =  newsService.getNews("NarendraModi",30,0,"en-in","Moderate");
+        Call<Response> newsObservable =  newsService.getNews("india",50,0,"en-in","Moderate");
         Log.d(TAG, "onCreate: here");
         newsObservable.enqueue(new Callback<Response>() {
             @Override

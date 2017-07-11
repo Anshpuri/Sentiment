@@ -18,7 +18,7 @@ public class TweetActivity extends ListActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet);
-        
+        setTitle("TimeLine");
 //        listView= (ListView) findViewById(android.R.id.list);
 
         final UserTimeline userTimeline = new UserTimeline.Builder()

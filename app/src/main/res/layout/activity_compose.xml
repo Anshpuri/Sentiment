@@ -59,18 +59,12 @@
     <Button
         android:id="@+id/btn_compose"
         android:layout_marginTop="50dp"
-        android:text="Teet"
+        android:text="Tweet"
         android:background="@color/colorPrimary"
         android:textColor="@color/tw__solid_white"
         android:layout_width="300dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="50dp" />
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/animation_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:lottie_fileName="mild_wave.json"
-        app:lottie_loop="true"
 
-        app:lottie_autoPlay="true" />
+
 </LinearLayout>

@@ -23,7 +23,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@android:style/Theme.DeviceDefault.Light.NoActionBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

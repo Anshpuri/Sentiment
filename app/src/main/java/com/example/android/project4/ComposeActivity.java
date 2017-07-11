@@ -35,6 +35,7 @@ public class ComposeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
+        setTitle("Compose Tweet");
         fab = (FloatingActionButton) findViewById(R.id.fab_pic);
         et_tweet = (EditText) findViewById(R.id.et_tweet);
         et_hashtag = (EditText) findViewById(R.id.et_hashtag);

@@ -70,8 +70,11 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("HashTag");
+
         navigationView= (NavigationView) findViewById(R.id.nav_view);
         header=navigationView.getHeaderView(0);
 
@@ -206,14 +209,15 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(MainActivity.this,ComposeActivity.class));
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(MainActivity.this,NewsActivity.class));
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            startActivity(new Intent(MainActivity.this, NewsActivity.class));
         }
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

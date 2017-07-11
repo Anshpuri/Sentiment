@@ -1,9 +1,9 @@
 package com.example.android.project4;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.twitter.sdk.android.core.Callback;
@@ -17,7 +17,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     private TwitterLoginButton loginButton;
     TwitterSession session;
@@ -37,13 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         preferences=getSharedPreferences("loginPref",LoginActivity.MODE_PRIVATE);
         final SharedPreferences.Editor editor =preferences.edit();
 
-        if(preferences.contains("token")){
-            //already looged in
-            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-        }
+        //change this if not to show login activity again again
+//        if(preferences.contains("token")){
+//            //already looged in
+//            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+//        }
 
         loginButton= (TwitterLoginButton) findViewById(R.id.login_button);
-
+        setTitle("Login");
         ////////////////////////////////////////////////////////////////////////////////////
 
         loginButton.setCallback(new Callback<TwitterSession>() {
