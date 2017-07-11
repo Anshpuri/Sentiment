@@ -66,6 +66,17 @@ public class MainActivity extends AppCompatActivity
     private ImageView img_nav_profile;
     private LinearLayout nav_ll;
 
+
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+//            String query = intent.getStringExtra(SearchManager.QUERY);
+//            Toast.makeText(this,query,Toast.LENGTH_SHORT).show();
+//            searchQuery=query;
+//        }
+//    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +146,8 @@ public class MainActivity extends AppCompatActivity
             String query = intent.getStringExtra(SearchManager.QUERY);
             searchQuery=query;
         }
+
+        ///////////////////////////////////////////////////////
         //adding Fragments
         fragmentList.add(TweetsFragment.newInstance(searchQuery,""));
         fragmentList.add(TwitterGraphFragment.newInstance("",""));
@@ -180,6 +193,7 @@ public class MainActivity extends AppCompatActivity
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView= (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
@@ -223,4 +237,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
 }

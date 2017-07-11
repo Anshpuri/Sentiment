@@ -84,7 +84,6 @@
             android:scaleType="centerCrop"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            app:lottie_fileName="emojishock.json"
             app:lottie_loop="true"
             app:lottie_autoPlay="true" />
 

@@ -82,30 +82,30 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.ANGER){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#c62828"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
 
-                        }
-                    });
-
-//                    holder.lottieAnimationView.setAnimation("emojishock.json");
-//                    holder.lottieAnimationView.loop(true);
+                    holder.lottieAnimationView.setAnimation("emojishock.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.DISGUST){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#1a237e"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
-
-                        }
-                    });
-//                    holder.lottieAnimationView.setAnimation("emojishock.json");
-//                    holder.lottieAnimationView.loop(true);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
+                    holder.lottieAnimationView.setAnimation("emojishock.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.FEAR){
@@ -125,57 +125,57 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.TweetViewHol
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.HAPPINESS){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#ffeb3b"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojitounge.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
-
-                        }
-                    });
-//                    holder.lottieAnimationView.setAnimation("emojitounge.json");
-//                    holder.lottieAnimationView.loop(true);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojitounge.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
+                    holder.lottieAnimationView.setAnimation("emojitounge.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.NEUTRAL){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#757575"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojiwink.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
-
-                        }
-                    });
-//                    holder.lottieAnimationView.setAnimation("emojiwink.json");
-//                    holder.lottieAnimationView.loop(true);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojiwink.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
+                    holder.lottieAnimationView.setAnimation("emojiwink.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.SADNESS){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#263238"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
-
-                        }
-                    });
-//                    holder.lottieAnimationView.setAnimation("emojishock.json");
-//                    holder.lottieAnimationView.loop(true);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojishock.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
+                    holder.lottieAnimationView.setAnimation("emojishock.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
                 if(emotionalState.getStrongestEmotion().getType()==Emotion.SURPRISE){
                     holder.tv_emotion.setText(map.get(emotionalState.getStrongestEmotion().getType()));
                     holder.tv_emotion.setTextColor(Color.parseColor("#388e3c"));
-                    LottieComposition.Factory.fromAssetFileName(context, "emojitounge.json", new OnCompositionLoadedListener() {
-                        @Override
-                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
-                            drawable.setComposition(composition);
-
-                        }
-                    });
-//                    holder.lottieAnimationView.setAnimation("emojitounge.json");
-//                    holder.lottieAnimationView.loop(true);
+//                    LottieComposition.Factory.fromAssetFileName(context, "emojitounge.json", new OnCompositionLoadedListener() {
+//                        @Override
+//                        public void onCompositionLoaded(@Nullable LottieComposition composition) {
+//                            drawable.setComposition(composition);
+//
+//                        }
+//                    });
+                    holder.lottieAnimationView.setAnimation("emojitounge.json");
+                    holder.lottieAnimationView.loop(true);
                     holder.lottieAnimationView.playAnimation();
                 }
 
